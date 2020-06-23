@@ -37,5 +37,9 @@ const Total = TotalModel(sequelize, Sequelize);
 
 module.exports = {
     sequelize,
-    User
+    User,
+    Customer,
+    Payment,
+    Note,
+    Total,
 };
