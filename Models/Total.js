@@ -19,11 +19,16 @@ module.exports = (sequelize, DataTypes) => {
             },
             outWithoutKDV: {
                 type: Sequelize.NUMBER,
-            },totalWithKDV: {
-                type: Sequelize.NUMBER,
-            },totalWithoutKDV: {
+            },
+            totalWithKDV: {
                 type: Sequelize.NUMBER,
             },
+            totalWithoutKDV: {
+                type: Sequelize.NUMBER,
+            },
+            totalAll: {
+                type: Sequelize.NUMBER,
+            }
         }
     ))
 }
