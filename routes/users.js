@@ -2,15 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { User, sequelize } = require("../Database/Database");
 
-// /* GET users listing. */
-// router.get("/", function(req, res, next) {
-//   res.send("respond with a resource");
-// });
-
 router.get('/', (req, res) => {
-  sequelize.findAll().then((result) => {
+  User.findAll().then((result) => {
     console.log("result", result)
-    res.json(result.toJSON())
+    res.json(result)
   })
 })
 
@@ -27,17 +22,19 @@ router.get('/', (req, res) => {
 router.post("/login", (req, res) => {
   const { username, password } = req.body;
 
-  User.findOne(req.body, {
+  User.findOne( {
     where: {
       username: username,
       password: password,
     }
   }).then((user) => {
-    res.json(user.toJSON());
-  }, err => {
-    res.send("Kullanıcı adı veya şifre yanlış!!")
+    if(user) {
+      res.send( { status: "success", user: user.dataValues });
+    } else {
+      res.status(404).send({ status: "alert", description: "Kullanıcı adı veya şifre yanlış!!!"})
+    }
   })
-})
+})  
 
 module.exports = router;
 
