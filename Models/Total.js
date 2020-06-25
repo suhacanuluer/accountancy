@@ -9,25 +9,25 @@ module.exports = (sequelize, DataTypes) => {
                 type: Sequelize.STRING,
             },
             inWithKDV: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.INTEGER,
             },
             inWithoutKDV: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.INTEGER,
             },
             outWithKDV: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.INTEGER,
             },
             outWithoutKDV: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.INTEGER,
             },
             totalWithKDV: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.INTEGER,
             },
             totalWithoutKDV: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.INTEGER,
             },
             totalAll: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.INTEGER,
             }
         }
     ))

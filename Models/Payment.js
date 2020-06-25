@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
                 type: Sequelize.STRING,
             },
             cost: {
-                type: Sequelize.NUMBER,
+                type: Sequelize.INTEGER,
             },
-            ınfoKDV: {
+            infoKDV: {
                 type: Sequelize.BOOLEAN,
             },
             inOrOut: {
