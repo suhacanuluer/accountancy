@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             notes: {
                 type: Sequelize.STRING,
             },
-            history: {
+            date: {
                 type: Sequelize.STRING,
             },
         }

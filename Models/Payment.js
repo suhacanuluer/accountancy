@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             inOrOut: {
                 type: Sequelize.BOOLEAN,
             },
-            history: {
+            date: {
                 type: Sequelize.STRING,
             },
         }
