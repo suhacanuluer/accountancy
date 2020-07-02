@@ -3,7 +3,8 @@ const UserModel = require("../Models/User");
 const CostumerModel = require("../Models/Customer");
 const PaymentModel = require("../Models/Payment");
 const NoteModel = require("../Models/Note");
-const TotalModel = require("../Models/Total");
+const UserBalanceModel = require("../Models/UserBalance");
+const CustomerBalanceModel = require("../Models/CustomerBalance");
 
 const sequelize = new Sequelize("accountancy", "root", "Ass122...", {
     host: "127.0.0.1",
@@ -31,8 +32,8 @@ const User = UserModel(sequelize, Sequelize);
 const Customer = CostumerModel(sequelize, Sequelize);
 const Payment = PaymentModel(sequelize, Sequelize);
 const Note = NoteModel(sequelize, Sequelize);
-const Total = TotalModel(sequelize, Sequelize);
-
+const UserBalance = UserBalanceModel(sequelize, Sequelize);
+const CustomerBalance = CustomerBalanceModel(sequelize, Sequelize);
 
 
 module.exports = {
@@ -41,5 +42,6 @@ module.exports = {
     Customer,
     Payment,
     Note,
-    Total,
+    UserBalance,
+    CustomerBalance
 };
