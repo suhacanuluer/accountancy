@@ -1,12 +1,11 @@
 const Sequelize = require("sequelize");
-const { sequelize } = require("../Database/Database");
 
 module.exports = (sequelize, DataTypes) => {
     return ( Customer = sequelize.define(
         "customer",
         {
             userID: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
             },
             customerInfo: {
                 type: Sequelize.STRING,

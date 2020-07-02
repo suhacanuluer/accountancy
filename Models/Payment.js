@@ -1,12 +1,11 @@
 const Sequelize = require("sequelize");
-const { sequelize } = require("../Database/Database");
 
 module.exports = (sequelize, DataTypes) => {
     return ( Payment = sequelize.define(
         "payment",
         {
             customerID: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
             },
             cost: {
                 type: Sequelize.INTEGER,
@@ -18,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: Sequelize.BOOLEAN,
             },
             date: {
-                type: Sequelize.STRING,
+                type: Sequelize.DATE,
             },
         }
     ))

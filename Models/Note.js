@@ -1,18 +1,17 @@
 const Sequelize = require("sequelize");
-const { sequelize } = require("../Database/Database");
 
 module.exports = (sequelize, DataTypes) => {
     return ( Note = sequelize.define(
         "note",
         {
             customerID: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
             },
             notes: {
                 type: Sequelize.STRING,
             },
             date: {
-                type: Sequelize.STRING,
+                type: Sequelize.DATE,
             },
         }
     ))
