@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             password: {
                 type: Sequelize.STRING,
             },
-            nameSurname: {
+            fullName: {
                 type: Sequelize.STRING,
             },
             companyName: {
@@ -20,5 +20,5 @@ module.exports = (sequelize, DataTypes) => {
                 type: Sequelize.STRING,
             },
         }
-    ))
-}
+    ));
+};

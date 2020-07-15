@@ -23,5 +23,5 @@ module.exports = (sequelize, DataTypes) => {
                 type: Sequelize.INTEGER
             }
         }
-    ))
-}
+    ));
+};

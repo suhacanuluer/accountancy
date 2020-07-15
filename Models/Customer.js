@@ -19,9 +19,9 @@ module.exports = (sequelize, DataTypes) => {
             taxNumber: {
                 type: Sequelize.STRING,
             },
-            taxAdress: {
+            taxAddress: {
                 type: Sequelize.STRING,
             },
         }
-    ))
-}
+    ));
+};

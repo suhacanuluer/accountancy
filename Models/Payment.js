@@ -20,5 +20,5 @@ module.exports = (sequelize, DataTypes) => {
                 type: Sequelize.DATE,
             },
         }
-    ))
-}
+    ));
+};
