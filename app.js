@@ -3,14 +3,18 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const cors = require("cors");
+const app = express();
+
 const Database = require("./Database/Database");
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const customersRouter = require("./routes/customers");
 const notesRouter = require("./routes/notes"); 
 const paymentsRouter = require('./routes/payments');
 const app = express();
-const cors = require("cors");
+
 
 app.use(cors());
 
