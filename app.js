@@ -13,8 +13,6 @@ const usersRouter = require("./routes/users");
 const customersRouter = require("./routes/customers");
 const notesRouter = require("./routes/notes"); 
 const paymentsRouter = require('./routes/payments');
-const app = express();
-
 
 app.use(cors());
 
