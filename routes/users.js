@@ -2,15 +2,15 @@ const express = require("express");
 const router = express.Router();
 const { User, sequelize } = require("../Database/Database");
 
-router.get('/', (req, res) => {
-  User.findAll().then((result) => {
-    console.log("result", result)
-    res.json(result)
-  })
-})
+// router.get('/', (req, res) => {
+//   User.findAll().then((result) => {
+//     console.log("result", result)
+//     res.json(result)
+//   })
+// })
 
 // router.post("/create" , (req, res) => {
-//   const { username, password, nameSurname, companyName, companyInfo } = req.body;
+//   const { username, password, fullName, companyName, companyInfo } = req.body;
 
 //   User.create(req.body).then((user) => {
 //     res.json(user.toJSON());
@@ -29,9 +29,9 @@ router.post("/login", (req, res) => {
     }
   }).then((user) => {
     if(user) {
-      res.send( { status: "success", user: user.dataValues });
+      res.json({ status: "success", data: user });
     } else {
-      res.status(404).send({ status: "alert", description: "Kullanıcı adı veya şifre yanlış!!!"})
+      res.json({ status: "error", message: "user not foun"})
     }
   })
 })  

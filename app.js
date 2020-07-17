@@ -3,18 +3,19 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-// const cors = require("cors");
-const app = express();
-
 const Database = require("./Database/Database");
+const cors = require("cors");
 
+//Routers
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const customersRouter = require("./routes/customers");
 const notesRouter = require("./routes/notes"); 
 const paymentsRouter = require('./routes/payments');
 
-// app.use(cors());
+const app = express();
+
+app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -27,11 +28,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/customers", customersRouter);
-app.use("/notes", notesRouter);
-app.use('/payments', paymentsRouter)
+app.use("/api/v1/", indexRouter);
+app.use("/api/v1/users", usersRouter);
+app.use("/api/v1/customers", customersRouter);
+app.use("/api/v1/notes", notesRouter);
+app.use('/api/v1/payments', paymentsRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

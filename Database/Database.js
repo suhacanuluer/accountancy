@@ -28,6 +28,7 @@ var reconnectOptions = {
     }
 };
 
+// Models/tables
 const User = UserModel(sequelize, Sequelize);
 const Customer = CostumerModel(sequelize, Sequelize);
 const Payment = PaymentModel(sequelize, Sequelize);
@@ -35,6 +36,11 @@ const Note = NoteModel(sequelize, Sequelize);
 const UserBalance = UserBalanceModel(sequelize, Sequelize);
 const CustomerBalance = CustomerBalanceModel(sequelize, Sequelize);
 
+// Relations
+Customer.belongsTo(User);
+User.hasMany(Customer);
+UserBalance.belongsTo(User);
+User.hasOne(UserBalance);
 
 module.exports = {
     sequelize,
