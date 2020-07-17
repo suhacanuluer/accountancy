@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const cors = require("cors");
+// const cors = require("cors");
 const app = express();
 
 const Database = require("./Database/Database");
@@ -14,7 +14,7 @@ const customersRouter = require("./routes/customers");
 const notesRouter = require("./routes/notes"); 
 const paymentsRouter = require('./routes/payments');
 
-app.use(cors());
+// app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
