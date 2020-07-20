@@ -1,14 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const { Note, sequelize } = require("../Database/Database");
+const { Note } = require("../Database/Database");
 
 router.post("/add", (req, res) => {
     const { customerID, notes, date } = req.body;
     
-    Note.create(req.body).then((notes) => {
-        res.json(notes.toJSON());
+    Note.create(req.body).then(note => {
+        res.json({
+            status: "success",
+            data: note
+        });
     }, (e) => {
-        res.status(500).send({ status: "error"})
+        res.status(500).json({ 
+            status: "error"
+        });
     });
 });
 
@@ -18,14 +23,21 @@ router.delete("/delete/:noteID", (req, res) => {
         where : {
             id : req.params.noteID
         }
-    }).then((rowDeleted) => {
+    }).then(rowDeleted => {
         if(rowDeleted === 0){
-            res.status(404).send();
+            res.status(404).json({
+                status: "error",
+                message: "note not found"
+            });
         } else {
-            res.status(204).send();
+            res.status(204).json({
+                status: "success"
+            });
         }
     }, () => {
-        res.status(500).send();
+        res.status(500).json({
+            status: "error"
+        });
     });
 });
 
