@@ -51,12 +51,17 @@ router.get("/:userID/details/:customerID", (req, res) => {
 })
 
 router.post("/add", (req, res) => {
-  const { userID, costumerInfo, costumerName, phoneNumber, taxNumber, taxAdress } = req.body;
+  const { userID, costumerInfo, costumerName, phoneNumber, taxNumber, taxAddress } = req.body;
 
   Customer.create(req.body).then((customer) => {
-    res.json(customer.toJSON());
+    res.json({
+      status: "success",
+      customer: customer
+    });
   }, (e) => {
-    res.status(500).send({ status: "error" })
+    res.status(500).json({ 
+      status: "error" 
+    });
   });
 });
 
@@ -67,13 +72,20 @@ router.delete("/delete/:customerID", (req, res) => {
           id : req.params.customerID
       }
   }).then((rowDeleted) => {
-      if(rowDeleted === 0){
-          res.status(404).send();
+      if(rowDeleted == 0){
+          res.status(404).json({
+            status: "error",
+            message: "customer not found"
+          });
       } else {
-          res.status(204).send();
+          res.status(204).json({
+            status: "success"
+          });
       }
   }, () => {
-      res.status(500).send();
+      res.status(500).json({
+        status: "error"
+      });
   });
 });
 
