@@ -68,24 +68,41 @@ router.post("/add", (req, res) => {
 router.delete("/delete/:customerID", (req, res) => {
 
   Customer.destroy({
-      where : {
+      where: {
           id : req.params.customerID
       }
-  }).then((rowDeleted) => {
-      if(rowDeleted == 0){
+  }).then(rowDeleted => {
+    if(rowDeleted == 0){
+      res.status(404).json({
+        status: "error",
+        message: "customer not found"
+      });
+    } else {
+      CustomerBalance.destroy({
+        where: {
+          customerID: req.params.customerID 
+        }
+      }).then(rowDeleted => {
+        if(rowDeleted == 0) {
           res.status(404).json({
             status: "error",
-            message: "customer not found"
+            message: "customer balance not found"
           });
-      } else {
+        } else {
           res.status(204).json({
             status: "success"
           });
-      }
-  }, () => {
-      res.status(500).json({
-        status: "error"
+        }
+      }, () => {
+        res.status(500).json({
+          status: "error"
+        });
       });
+    }
+  }, () => {
+    res.status(500).json({
+      status: "error"
+    });
   });
 });
 
