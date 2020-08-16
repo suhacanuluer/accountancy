@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
             customerName: {
                 type: Sequelize.STRING,
             },
+            whichCategory: {
+                type: Sequelize.STRING
+            },
             phoneNumber: {
                 type: Sequelize.STRING,
             },

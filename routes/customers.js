@@ -7,7 +7,7 @@ router.get('/:id', (req, res) => {
     where: { id: req.params.id},
     attributes: [ "id", "companyInfo", "companyName", "fullName"],
     include: [
-      { model: Customer , attributes: [ "id", "userID", "customerName", "customerInfo", "phoneNumber" ]},
+      { model: Customer , attributes: [ "id", "userID", "customerName", "customerInfo", "whichCategory", "phoneNumber" ]},
       { model: UserBalance }
     ]
   }).then(customers => {
@@ -24,7 +24,7 @@ router.get('/:id', (req, res) => {
     }    
   });
 });
-
+         
 router.get("/:userID/details/:customerID", (req, res) => {
   Customer.findOne( {
     where: {
@@ -51,7 +51,7 @@ router.get("/:userID/details/:customerID", (req, res) => {
 })
 
 router.post("/add", (req, res) => {
-  const { userID, costumerInfo, costumerName, phoneNumber, taxNumber, taxAddress } = req.body;
+  const { userID, costumerInfo, costumerName, whichCategory, phoneNumber, taxNumber, taxAddress } = req.body;
 
   Customer.create(req.body).then((customer) => {
     res.json({
