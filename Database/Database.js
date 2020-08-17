@@ -6,8 +6,14 @@ const NoteModel = require("../Models/Note");
 const UserBalanceModel = require("../Models/UserBalance");
 const CustomerBalanceModel = require("../Models/CustomerBalance");
 
-const sequelize = new Sequelize("accountancy", "root", "Ass122...", {
-    host: "127.0.0.1",
+// const sequelize = new Sequelize("accountancy", "root", "Ass122...", {
+//     host: "127.0.0.1",
+//     dialect: "mysql",
+//     reconnect: reconnectOptions || true
+// });
+
+const sequelize = new Sequelize("heroku_5b185bc46fdbd51", "bfe1b1e29f2ff5", "791d2c7d", {
+    host: "us-cdbr-east-02.cleardb.com",
     dialect: "mysql",
     reconnect: reconnectOptions || true
 });
