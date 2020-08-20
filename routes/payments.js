@@ -4,8 +4,8 @@ const { Payment, CustomerBalance, UserBalance } = require("../Database/Database"
 
 router.post("/add", (req, res) => {
     const { userID, customerID, cost, infoKDV, inOrOut, date } = req.body;
-
-// creating payment transactions
+    if( userID != null && customerID != null && cost != null && infoKDV != null && inOrOut != null && date != null) {
+        // creating payment transactions
     Payment.create(req.body).then(payment => {
         res.json({
             status: "success",
@@ -70,37 +70,44 @@ router.post("/add", (req, res) => {
     });
 
 // creating balance transactions for User
-    function updatedUserBalance(customerBalance) {
-        UserBalance.findOne({
-            where: {
-                userID: userID
-            }
-        }).then(oldUserBalance => {
-            if(oldUserBalance == null) {
-                payment.userID = userID;
-                UserBalance.create(payment).then(newUserBalance => {
-                    console.log("newUserBalance", newUserBalance);
-                });
-            } else {
-                let currentUserBalance = oldUserBalance.dataValues;
-                currentUserBalance.inMoneyVAT += payment.inMoneyVAT;
-                currentUserBalance.amountVAT += payment.amountVAT;
-                currentUserBalance.inMoney += payment.inMoney;
-                currentUserBalance.outMoney += payment.outMoney;
-                currentUserBalance.totalMoney += payment.totalMoney;
-                currentUserBalance.userID = userID
+        function updatedUserBalance(customerBalance) {
+            UserBalance.findOne({
+                where: {
+                    userID: userID
+                }
+            }).then(oldUserBalance => {
+                if(oldUserBalance == null) {
+                    payment.userID = userID;
+                    UserBalance.create(payment).then(newUserBalance => {
+                        console.log("newUserBalance", newUserBalance);
+                    });
+                } else {
+                    let currentUserBalance = oldUserBalance.dataValues;
+                    currentUserBalance.inMoneyVAT += payment.inMoneyVAT;
+                    currentUserBalance.amountVAT += payment.amountVAT;
+                    currentUserBalance.inMoney += payment.inMoney;
+                    currentUserBalance.outMoney += payment.outMoney;
+                    currentUserBalance.totalMoney += payment.totalMoney;
+                    currentUserBalance.userID = userID
 
-                UserBalance.update(
-                    currentUserBalance,
-                    { where: {
-                        userID: userID
-                    }}
-                ).then(finalUserBalance => {
-                    console.log("finalUserBalance", finalUserBalance);
-                });
-            }
+                    UserBalance.update(
+                        currentUserBalance,
+                        { where: {
+                            userID: userID
+                        }}
+                    ).then(finalUserBalance => {
+                        console.log("finalUserBalance", finalUserBalance);
+                    });
+                }
+            });
+        };
+    } else { 
+        res.json({
+            status: "error",
+            message: "missing parameter or parameters"
         });
-    };
+    }
+
 });
 
 router.delete("/:userID/delete/:paymentID", (req, res) => {
