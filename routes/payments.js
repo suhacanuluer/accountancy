@@ -104,128 +104,118 @@ router.post("/add", (req, res) => {
 });
 
 router.delete("/:userID/delete/:paymentID", (req, res) => {
-
     Payment.findOne({
         where: {
             id: req.params.paymentID
         }
-    }).then(deletedPayment => {
+    }).then(paymentResult => paymentResult.toJSON()).then(paymentResult => {
         let willDeleteBalance = {};
-        if( deletedPayment != null) {
-            if(deletedPayment.inOrOut == true) {
-                if(deletedPayment.infoKDV == true) {
-                    willDeleteBalance.inMoneyVAT = deletedPayment.cost;
-                    willDeleteBalance.amountVAT = ( deletedPayment.cost / 100 * 18 );
+        if( paymentResult != null ) {
+            if(paymentResult.inOrOut == true) {
+                if(paymentResult.infoKDV == true) {
+                    willDeleteBalance.inMoneyVAT = paymentResult.cost;
+                    willDeleteBalance.amountVAT = ( paymentResult.cost / 100 * 18 );
                     willDeleteBalance.inMoney = 0;
                     willDeleteBalance.outMoney = 0;
                 } else {
                     willDeleteBalance.inMoneyVAT = 0;
                     willDeleteBalance.amountVAT = 0;
-                    willDeleteBalance.inMoney = deletedPayment.cost;
+                    willDeleteBalance.inMoney = paymentResult.cost;
                     willDeleteBalance.outMoney = 0;
                 }
             } else {
                 willDeleteBalance.inMoneyVAT = 0;
                 willDeleteBalance.amountVAT = 0;
                 willDeleteBalance.inMoney = 0;
-                willDeleteBalance.outMoney = deletedPayment.cost;
+                willDeleteBalance.outMoney = paymentResult.cost;
             }
-            willDeleteBalance.totalMoney = ( willDeleteBalance.inMoneyVAT + willDeleteBalance.inMoney - willDeleteBalance.outMoney )
+            willDeleteBalance.totalMoney = ( willDeleteBalance.inMoneyVAT + willDeleteBalance.inMoney - willDeleteBalance.outMoney );
 
-            CustomerBalance.findOne({
+            UserBalance.findOne({
                 where: {
-                    customerID: deletedPayment.customerID
+                    userID: req.params.userID
                 }
-            }).then(oldCustomerBalance => {
-                if(oldCustomerBalance != null) {
-                    let updatedCustomerBalance = oldCustomerBalance;
-                    updatedCustomerBalance.inMoneyVAT -= willDeleteBalance.inMoneyVAT;
-                    updatedCustomerBalance.amountVAT -= willDeleteBalance.amountVAT;
-                    updatedCustomerBalance.inMoney -= willDeleteBalance.inMoney;
-                    updatedCustomerBalance.outMoney -= willDeleteBalance.outMoney;
-                    updatedCustomerBalance.totalMoney -= willDeleteBalance.totalMoney;
-                    updatedCustomerBalance.customerID = deletedPayment.customerID;
+            }).then(userResult => {
+                if( userResult != null ) {
+                    let userAttributes = {};
+                    userAttributes = userResult.dataValues
+                    userAttributes.inMoneyVAT -= willDeleteBalance.inMoneyVAT;
+                    userAttributes.amountVAT -= willDeleteBalance.amountVAT;
+                    userAttributes.inMoney -= willDeleteBalance.inMoney;
+                    userAttributes.outMoney -= willDeleteBalance.outMoney;
+                    userAttributes.totalMoney -= willDeleteBalance.totalMoney;
 
-                    CustomerBalance.update(
-                        updatedCustomerBalance,
-                        { where: {
-                            customerID: updatedCustomerBalance.customerID
-                        }}
-                    ).then(lastCustomerBalance => {
-                        console.log("lastCustomerBalance", lastCustomerBalance);
-                        UserBalance.findOne({
-                            where: {
-                                userID: req.params.userID 
-                            }
-                        }).then(oldUserBalance => {
-                            if(oldUserBalance != null) {
-                                let updatedUserBalance = oldUserBalance;
-                                updatedUserBalance.inMoneyVAT -= willDeleteBalance.inMoneyVAT;
-                                updatedUserBalance.amountVAT -= willDeleteBalance.amountVAT;
-                                updatedUserBalance.inMoney -= willDeleteBalance.inMoney;
-                                updatedUserBalance.outMoney -= willDeleteBalance.outMoney;
-                                updatedUserBalance.totalMoney -= willDeleteBalance.totalMoney;
-                                updatedUserBalance.userID = req.params.userID;
+                    CustomerBalance.findOne({
+                        where: {
+                            customerID: paymentResult.customerID
+                        }
+                    }).then(customerResult => {
+                        if( customerResult != null) {
+                            let customerAttributes = {};
+                            customerAttributes = customerResult.dataValues
+                            customerAttributes.inMoneyVAT -= willDeleteBalance.inMoneyVAT;
+                            customerAttributes.amountVAT -= willDeleteBalance.amountVAT;
+                            customerAttributes.inMoney -= willDeleteBalance.inMoney;
+                            customerAttributes.outMoney -= willDeleteBalance.outMoney;
+                            customerAttributes.totalMoney -= willDeleteBalance.totalMoney;
 
-                                UserBalance.update(
-                                    updatedUserBalance,
-                                    { where: {
-                                        userID: req.params.userID
-                                    }}
-                                ).then(lastUserBalance => {
-                                    console.log("lastUserBalance", lastUserBalance);
-                                    Payment.destroy({
+                            Payment.destroy({
+                                where: {
+                                    id: req.params.paymentID
+                                }
+                            }).then((rowDeleted) => {
+                                if(rowDeleted == 1) {
+                                    let upToDateBalances = {};
+                                    UserBalance.findOne({
                                         where: {
-                                          id: req.params.paymentID 
+                                            userID: req.params.userID
                                         }
-                                    }).then(rowDeleted => {
-                                        if(rowDeleted == 0) {
-                                          res.status(404).json({
-                                            status: "error",
-                                            message: "payment not found"
-                                          });
-                                        } else {
-                                          res.status(204).json({
-                                            status: "success"
-                                          });
-                                        }
-                                    }, () => {
-                                        res.status(500).json({
-                                          status: "error"
+                                    }).then((result) => {
+                                        result.update(userAttributes).then((user) => {
+                                            upToDateBalances.upToDateUserBalance = user.toJSON();
                                         });
                                     });
-                                }, () => {
-                                    res.status(500).json({
-                                        status: "error"
+                                    CustomerBalance.findOne({
+                                        where: {
+                                            customerID: paymentResult.customerID
+                                        }
+                                    }).then((result) => {
+                                        result.update(customerAttributes).then((customer) => {
+                                            upToDateBalances.upToDateCustomerBalance = customer.toJSON();
+                                            res.json({
+                                                status: "success",
+                                                data: upToDateBalances
+                                            });
+                                        });
                                     });
-                                });
-                            } else {
-                                res.status(404).json({
-                                    status: "error",
-                                    message: "user balance not found"
-                                });
-                            }
-                        });
-                    }, () => {
-                        res.status(500).json({
-                            status: "error"
-                        });
-                    });
+                                } else {
+                                    res.json({
+                                        status: "error",
+                                        message: "payment cannot delete"
+                                    });
+                                }
+                            })
+                        } else {
+                            res.status(404).json({
+                                status: "error",
+                                message: "customerBalance not found"
+                            });
+                        }
+                    });  
                 } else {
                     res.status(404).json({
                         status: "error",
-                        message: "customer balance not found"
+                        message: "userBalance not found"
                     });
-                }
+                }    
             });
         } else {
             res.status(404).json({
                 status: "error",
                 message: "payment not found"
             });
-        }
+        }   
     });
-  });
+});
 
 module.exports = router;
-

@@ -31,7 +31,7 @@ router.post("/login", (req, res) => {
     if(user) {
       res.json({ status: "success", data: user });
     } else {
-      res.json({ status: "error", message: "user not foun"})
+      res.json({ status: "error", message: "user not found" })
     }
   })
 })  
