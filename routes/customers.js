@@ -1,4 +1,5 @@
 const express = require("express");
+const validator = require("validator");
 const router = express.Router();
 const { Customer, User, UserBalance, Payment, Note, CustomerBalance } = require("../Database/Database");
 
@@ -53,16 +54,23 @@ router.get("/:userID/details/:customerID", (req, res) => {
 router.post("/add", (req, res) => {
   const { userID, costumerInfo, costumerName, whichCategory, phoneNumber, taxNumber, taxAddress } = req.body;
 
-  Customer.create(req.body).then((customer) => {
+  if( validator.isMobilePhone(phoneNumber, "tr-TR") == true ) {  
+    Customer.create(req.body).then((customer) => {
+      res.json({
+        status: "success",
+        customer: customer
+      });
+    }, (e) => {
+      res.status(500).json({ 
+        status: "error" 
+      });
+    });
+  } else {
     res.json({
-      status: "success",
-      customer: customer
-    });
-  }, (e) => {
-    res.status(500).json({ 
-      status: "error" 
-    });
-  });
+      status: "error",
+      message: "invalid phone number type"
+    })
+  }  
 });
 
 router.delete("/delete/:customerID", (req, res) => {
