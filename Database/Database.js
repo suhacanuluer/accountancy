@@ -42,21 +42,21 @@ const Note = NoteModel(sequelize, Sequelize);
 const UserBalance = UserBalanceModel(sequelize, Sequelize);
 const CustomerBalance = CustomerBalanceModel(sequelize, Sequelize);
 
-// Relations
-Customer.belongsTo(User);
-User.hasMany(Customer);
+// // Relations
+// Customer.belongsTo(User);
+// User.hasMany(Customer);
 
-UserBalance.belongsTo(User);
-User.hasOne(UserBalance);
+// UserBalance.belongsTo(User);
+// User.hasOne(UserBalance);
 
-CustomerBalance.belongsTo(Customer);
-Customer.hasOne(CustomerBalance);
+// CustomerBalance.belongsTo(Customer);
+// Customer.hasOne(CustomerBalance);
 
-Payment.belongsTo(Customer);
-Customer.hasMany(Payment);
+// Payment.belongsTo(Customer);
+// Customer.hasMany(Payment);
 
-Note.belongsTo(Customer);
-Customer.hasMany(Note);
+// Note.belongsTo(Customer);
+// Customer.hasMany(Note);
 
 module.exports = {
     sequelize,
