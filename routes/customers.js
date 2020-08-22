@@ -52,25 +52,32 @@ router.get("/:userID/details/:customerID", (req, res) => {
 })
 
 router.post("/add", (req, res) => {
-  const { userID, costumerInfo, costumerName, whichCategory, phoneNumber, taxNumber, taxAddress } = req.body;
+  const { userID, customerInfo, customerName, whichCategory, phoneNumber, taxNumber, taxAddress } = req.body;
 
-  if( validator.isMobilePhone(phoneNumber, "tr-TR") == true ) {  
-    Customer.create(req.body).then((customer) => {
+  if ( userID != null && customerInfo != null && customerName != null && whichCategory != null && taxNumber != null && taxAddress != null && userID != null) {
+    if( validator.isMobilePhone(phoneNumber, "tr-TR") == true ) {  
+      Customer.create(req.body).then((customer) => {
+        res.json({
+          status: "success",
+          customer: customer
+        });
+      }, (e) => {
+        res.status(500).json({ 
+          status: "error" 
+        });
+      });
+    } else {
       res.json({
-        status: "success",
-        customer: customer
-      });
-    }, (e) => {
-      res.status(500).json({ 
-        status: "error" 
-      });
-    });
+        status: "error",
+        message: "invalid phone number type"
+      })
+    }
   } else {
     res.json({
       status: "error",
-      message: "invalid phone number type"
+      message: "missing parameter or parameters"
     })
-  }  
+  }
 });
 
 router.delete("/delete/:customerID", (req, res) => {
