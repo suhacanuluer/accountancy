@@ -8,19 +8,19 @@ module.exports = (sequelize, DataTypes) => {
                 type: Sequelize.INTEGER,
             },
             inMoneyVAT: {
-                type: Sequelize.INTEGER
+                type: Sequelize.DOUBLE
             },
             amountVAT: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.DOUBLE,
             },
             inMoney: {
-                type: Sequelize.INTEGER
+                type: Sequelize.DOUBLE
             },
             outMoney: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.DOUBLE,
             },
             totalMoney: {
-                type: Sequelize.INTEGER
+                type: Sequelize.DOUBLE
             }
         }
     ));

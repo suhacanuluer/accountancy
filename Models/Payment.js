@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: Sequelize.INTEGER,
             },
             cost: {
-                type: Sequelize.INTEGER,
+                type: Sequelize.DOUBLE,
             },
             infoKDV: {
                 type: Sequelize.BOOLEAN,
