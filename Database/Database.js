@@ -6,17 +6,17 @@ const NoteModel = require("../Models/Note");
 const UserBalanceModel = require("../Models/UserBalance");
 const CustomerBalanceModel = require("../Models/CustomerBalance");
 
-const sequelize = new Sequelize("accountancy", "root", "Ass122...", {
-    host: "127.0.0.1",
-    dialect: "mysql",
-    reconnect: reconnectOptions || true
-});
-
-// const sequelize = new Sequelize("heroku_5b185bc46fdbd51", "bfe1b1e29f2ff5", "791d2c7d", {
-//     host: "us-cdbr-east-02.cleardb.com",
+// const sequelize = new Sequelize("accountancy", "root", "Ass122...", {
+//     host: "127.0.0.1",
 //     dialect: "mysql",
 //     reconnect: reconnectOptions || true
 // });
+
+const sequelize = new Sequelize("heroku_5b185bc46fdbd51", "bfe1b1e29f2ff5", "791d2c7d", {
+    host: "us-cdbr-east-02.cleardb.com",
+    dialect: "mysql",
+    reconnect: reconnectOptions || true
+});
 
 sequelize
     .sync()
@@ -42,21 +42,21 @@ const Note = NoteModel(sequelize, Sequelize);
 const UserBalance = UserBalanceModel(sequelize, Sequelize);
 const CustomerBalance = CustomerBalanceModel(sequelize, Sequelize);
 
-// // Relations
-// Customer.belongsTo(User);
-// User.hasMany(Customer);
+// Relations
+Customer.belongsTo(User);
+User.hasMany(Customer);
 
-// UserBalance.belongsTo(User);
-// User.hasOne(UserBalance);
+UserBalance.belongsTo(User);
+User.hasOne(UserBalance);
 
-// CustomerBalance.belongsTo(Customer);
-// Customer.hasOne(CustomerBalance);
+CustomerBalance.belongsTo(Customer);
+Customer.hasOne(CustomerBalance);
 
-// Payment.belongsTo(Customer);
-// Customer.hasMany(Payment);
+Payment.belongsTo(Customer);
+Customer.hasMany(Payment);
 
-// Note.belongsTo(Customer);
-// Customer.hasMany(Note);
+Note.belongsTo(Customer);
+Customer.hasMany(Note);
 
 module.exports = {
     sequelize,
