@@ -104,8 +104,25 @@ router.delete("/delete/:customerID", (req, res) => {
             message: "customer balance not found"
           });
         } else {
-          res.status(204).json({
-            status: "success"
+          Payment.destroy({
+            where : {
+                customerID : req.params.customerID
+            }
+          }).then(rowDeleted => {
+              if(rowDeleted == 0){
+                  res.status(404).json({
+                      status: "error",
+                      message: "payments not found"
+                  });
+              } else {
+                  res.status(204).json({
+                      status: "success"
+                  });
+              }
+          }, () => {
+              res.status(500).json({
+                  status: "error"
+              });
           });
         }
       }, () => {
