@@ -55,7 +55,7 @@ router.post("/add", (req, res) => {
   const { userID, customerInfo, customerName, whichCategory, phoneNumber, taxNumber, taxAddress } = req.body;
 
   if ( userID != null && customerInfo != null && customerName != null && whichCategory != null && taxNumber != null && taxAddress != null && userID != null) {
-    if( validator.isMobilePhone(phoneNumber, "tr-TR") == true ) {  
+    if( phoneNumber.length == 11 || phoneNumber.length == 10 ) {  
       Customer.create(req.body).then((customer) => {
         res.json({
           status: "success",
