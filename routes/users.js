@@ -26,7 +26,10 @@ router.post("/login", (req, res) => {
     where: {
       username: username,
       password: password,
-    }
+    },
+    attributes: [ 
+      "id", "fullName", "companyName", "companyInfo", "createdAt", "updatedAt"
+    ]  
   }).then((user) => {
     if(user) {
       res.json({ status: "success", data: user });
